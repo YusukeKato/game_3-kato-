@@ -1,0 +1,15 @@
+game_3
+
+2016.2.13
+2016.2.16
+
+Yusuke Kato
+
+Let' go!!
+
+'mouse_left_button':game start
+'e':jump
+'w':up
+'s':down
+'d':right
+'a':left

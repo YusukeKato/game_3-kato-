@@ -1,7 +1,7 @@
 /*game_3_1	*/
 /*YusukeKato*/
 /*2016.2.13	*/
-/*2016.2.15	*/
+/*2016.2.16	*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,28 +9,28 @@
 #include <GL/glut.h>
 #define PI 3.14159265
 
-/*視点の位置*/
+/* view_position */
 static GLdouble x=0.0,y=0.0,z=0.0; 
-/*視点の向き*/
+/* view_direction */
 static GLdouble r=180.0; 
-/*フラグ*/
+/* flag */
 static GLint fg1=0,fg2=0;
 static GLint flg1=0;
 static GLint flag1=0;
-/* 箱の座標 */
+/* box_position */
 static GLfloat x1=0.0,y1=0.0,z1=0.0;
 static GLfloat x2=3.0,y2=0.0,z2=3.0;
 static GLfloat x3=-10.0,y3=0.0,z3=10.0;
 static GLfloat x4=-10.0,y4=0.0,z4=-10.0;
 static GLfloat x5=10.0,y5=0.0,z5=-10.0;
-
+/* count */
 static GLint i=0,j=0;
-
+/* laws_of_physics */
 static GLfloat dy=0.0,ddy=0.0,dt=0.01;
 
 void scene(void)
 {
-	/* 物体の色 */
+	/* color */
   	static GLfloat red[] = { 0.8, 0.3, 0.3, 1.0 };
   	static GLfloat green[] = { 0.3, 0.8, 0.3, 1.0 };
   	static GLfloat blue[] = { 0.3, 0.3, 0.8, 1.0 };
@@ -40,7 +40,7 @@ void scene(void)
     	{ 0.6, 0.6, 0.6, 1.0 },
     	{ 0.3, 0.3, 0.3, 1.0 }
   	};
-	/********** グレーの箱(最初) **********/
+	/********** box_gray **********/
 	for(j=0;j<3;j++)
 	{
 		x1=30;
@@ -62,41 +62,41 @@ void scene(void)
 			else break;
 		}
 	}
-	/********** グレーの箱(最後) **********/
+	/********** box_gray **********/
 	
-	/********** 赤い箱 **********/
+	/********** box_red **********/
 	glPushMatrix();
 	glTranslated(x2, y2, z2);
   	glMaterialfv(GL_FRONT, GL_DIFFUSE, red);
   	glutSolidCube(1.0);
 	glPopMatrix();
-	/****************************/
+	/********** box_red **********/
 	
-  	/********** 緑の箱 **********/
+  	/********** box_green **********/
   	glPushMatrix();
   	glTranslated(x3, y3, z3);
   	glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
   	glutSolidCube(1.0);
   	glPopMatrix();
-	/****************************/
+	/********** box_green ***********/
 	
-  	/********** 青い箱 **********/
+  	/********** box_blue **********/
   	glPushMatrix();
   	glTranslated(x4, y4, z4);
   	glMaterialfv(GL_FRONT, GL_DIFFUSE, blue);
   	glutSolidCube(1.0);
   	glPopMatrix();
-	/****************************/
+	/********** box_blue **********/
 	
-  	/********** 黄色い箱 **********/
+  	/********** box_yellow **********/
 	glPushMatrix();
   	glTranslated(x5, y5, z5);
   	glMaterialfv(GL_FRONT, GL_DIFFUSE, yellow);
   	glutSolidCube(1.0);
   	glPopMatrix();
-	/******************************/
+	/********** box_yellow **********/
 	
-	/********** 地面 **********/
+	/********** grand **********/
   	glBegin(GL_QUADS);
   	glNormal3d(0.0, 1.0, 0.0);
   	for (j = -35; j <= 35; ++j) {
@@ -109,45 +109,45 @@ void scene(void)
     	}
  	 }
 	 glEnd();
-	 /*************************/
+	 /**************************/
 }
 
 void display(void)
 {
-	/* 光源の位置 */
+	/* light_position */
 	static GLfloat light0pos[] = { 0.0, 3.0, 5.0, 1.0 };
 	static GLfloat light1pos[] = { 5.0, 3.0, 0.0, 1.0 };
-  	/* 画面クリア */
+  	/* screen_clear */
   	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  	/* モデルビュー変換行列の初期化 */
+  	/* Initialization_TransformationMatrix_ModelView */
   	glLoadIdentity();
-  	/* 視点の移動 */
+  	/* view_motion */
   	glRotated(r, 0.0, 1.0, 0.0);
   	glTranslated(x,y,z);
-	/* 光源の位置を設定 */
+	/* Light_Position_setting */
   	glLightfv(GL_LIGHT0, GL_POSITION, light0pos);
 	glLightfv(GL_LIGHT1, GL_POSITION, light1pos);
-  	/* シーンの描画 */
+  	/* scene_write */
   	scene();
   	glFlush();
 }
 
 void reshape(int w, int h)
 {
-  	/* ウィンドウ全体をビューポートにする */
+  	/* vierport_window */
   	glViewport(0, 0, w, h);
-  	/* 透視変換行列の指定 */
+  	/* Specify_PerspectiveTransformationMatrix */
   	glMatrixMode(GL_PROJECTION);
-  	/* 透視変換行列の初期化 */
+  	/* Initialization_PerspectiveTransformationMatrix */
   	glLoadIdentity();
   	gluPerspective(30.0, (double)w / (double)h, 1.0, 100.0);
-  	/* モデルビュー変換行列の指定 */
+  	/* Specify_TransformationMatrix_ModelView */
   	glMatrixMode(GL_MODELVIEW);
 }
 
 void simu(void)
 {
-	/***** ジャンプ *****/
+	/***** Jump *****/
 	y = y + dy * dt + ddy * dt * dt / 2.0;
 	dy = dy + ddy * dt;
 	if(y>0.0)
@@ -156,15 +156,15 @@ void simu(void)
 		dy=0.0;
 		ddy=0.0;
 	}
-	//一階上限 -3.0まで
+	//upper_limit
 	if(y>-4.0&&y<-3.0) y=-3.0;
 	/********************/
-	/***** 回転 *****/
+	/***** turn *****/
 	if(r>360) r=0;
 	if(r<0) r=360;
 	/****************/
-	/***** 箱移動 *****/
-	/* 箱1 */
+	/***** box_motion *****/
+	/* 1_box_red */
 	if(flg1==0)
 	{
 		x2=x2-0.01;
@@ -188,7 +188,7 @@ void simu(void)
 	/*******/
 	/******************/
 	/***** 'w''s''d''a' *****/
-	//front
+	//forward
 	if(fg2==1&&r>=0&&r<90)
 	{
 		 x = x - 0.1 * sin(r*(PI/180.0));
@@ -239,7 +239,7 @@ void simu(void)
 	}
 	/***********************/
 	
-	/********** 衝突条件 **********/
+	/********** collision_detection **********/
 	if(z>29) fg1=1;
 	if(z<-29) fg1=2;
 	if(x>29) fg1=3;
@@ -302,7 +302,7 @@ void keyboard(unsigned char key, int x, int y)
 
 void init(void)
 {
-  	/* 初期設定 */
+  	/* initial_setting */
   	glClearColor(1.0, 1.0, 1.0, 0.0);
   	glEnable(GL_DEPTH_TEST);
   	glEnable(GL_CULL_FACE);
